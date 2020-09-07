@@ -1,0 +1,42 @@
+version: '3'
+services:
+  openproject:
+    container_name: openproject
+    depends_on:
+      - db
+    image: openproject/community:latest
+    ports:
+      - '3000:80'
+    restart: always
+    volumes:
+      - ./openproject/static:/var/db/openproject
+      - ./openproject/logs:/var/log/supervisor
+      - ./openproject/pgdata:/var/lib/postgresql/9.6/main
+    environment:
+      - DATABASE_URL=postgres://postgres:Lugar2020@db/openproject
+      - EMAIL_DELIVERY_METHOD=smtp
+      - SMTP_ADDRESS=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_DOMAIN=smtp.gmail.com
+      - SMTP_AUTHENTICATION=plain
+      - SMTP_USER_NAME=adresse-email
+      - SMTP_PASSWORD=mot-de-passe
+      - SMTP_ENABLE_STARTTLS_AUTO=true
+
+
+
+  db:
+    container_name: postgresql
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=openproject
+      - POSTGRES_PASSWORD=Lugar2020
+
+volumes:
+  postgres-data:
+

@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  jira:
+    depends_on:
+      - mysql
+    container_name: jira
+    restart: always
+    image: atlassian/jira-software:latest
+    ports:
+      - '2000:8080'
+    volumes:
+      - jira-data:/var/atlassian/jira  # JIRA_HOME
+
+  mysql:
+    container_name: mysql
+    restart: always
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=Lugar2020
+      - MYSQL_DATABASE=jira_db
+      - MYSQL_USER=jira_user
+      - MYSQL_PASSWORD=Lugar2020
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  jira-data:
+  mysql-data:
